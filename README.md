@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FundTrack
 
-## Getting Started
+FundTrack is a financial management application for nonprofit organizations. It tracks donors, projects, budgets, and transactions in USD by default. It is not a certified accounting or compliance product.
 
-First, run the development server:
+The application is a Next.js App Router project with Supabase Auth and PostgreSQL. Milestone status lives in [docs/development-roadmap.md](docs/development-roadmap.md).
+
+## Local setup
+
+```bash
+npm install
+cp .env.example .env.local
+```
+
+Set these values in `.env.local` from the Supabase project settings:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+
+Do not put a service-role key in `.env.local`. That file is gitignored.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). An anonymous visit is redirected to `/login`. The dashboard still shows labeled demonstration figures.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm test
+npm run typecheck
+npm run lint
+npm run build
+```
 
-## Learn More
+## Documentation
 
-To learn more about Next.js, take a look at the following resources:
+- [Architecture](docs/architecture.md)
+- [Database design](docs/database-design.md)
+- [Financial rules](docs/financial-rules.md)
+- [Security](docs/security.md)
+- [Testing](docs/testing.md)
+- [Roadmap](docs/development-roadmap.md)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployment, seed data, and the full acceptance guide are Milestone 12. Do not deploy from this repository until that work is approved.

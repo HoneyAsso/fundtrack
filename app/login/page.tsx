@@ -2,8 +2,10 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,19 +13,23 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
+
+import { HandCoins, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  async function handleLogin(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const supabase = createClient();
@@ -49,16 +55,22 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mb-3 text-3xl font-bold text-blue-700">
-            FundTrack
+    <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10">
+      <Card className="w-full max-w-md shadow-sm">
+        <CardHeader className="space-y-4 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
+            <HandCoins size={26} />
           </div>
-          <CardTitle>Sign in to your account</CardTitle>
-          <p className="text-sm text-slate-500">
-            Financial Management Platform
-          </p>
+
+          <div>
+            <CardTitle className="text-2xl">
+              Welcome Back
+            </CardTitle>
+
+            <CardDescription className="mt-2">
+              Sign in to your FundTrack account
+            </CardDescription>
+          </div>
         </CardHeader>
 
         <CardContent>
@@ -74,7 +86,7 @@ export default function LoginPage() {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
 
@@ -89,7 +101,7 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
 
@@ -101,11 +113,24 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full"
               disabled={loading}
+              className="w-full"
             >
+              {loading && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
               {loading ? "Signing in..." : "Sign In"}
             </Button>
+
+            <p className="text-center text-sm text-slate-500">
+              Don&apos;t have an account?{" "}
+              <Link
+                href="/register"
+                className="font-medium text-blue-600 hover:underline"
+              >
+                Create an account
+              </Link>
+            </p>
           </form>
         </CardContent>
       </Card>

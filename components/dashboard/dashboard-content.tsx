@@ -25,7 +25,9 @@ import {
 } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
+import { LogoutButton } from "@/components/auth/logout-button";
 
+// Sidebar navigation
 const navigation = [
   { name: "Dashboard", icon: LayoutDashboard, active: true },
   { name: "Projects", icon: FolderKanban },
@@ -35,6 +37,7 @@ const navigation = [
   { name: "Reports", icon: ChartNoAxesCombined },
 ];
 
+// Demo financial statistics
 const stats = [
   {
     title: "Total Funding",
@@ -66,6 +69,7 @@ const stats = [
   },
 ];
 
+// Demo project budgets
 const projects = [
   {
     name: "Community Health Program",
@@ -89,6 +93,7 @@ const projects = [
   },
 ];
 
+// Demo transactions
 const transactions = [
   {
     id: "TRX-1001",
@@ -124,6 +129,7 @@ const transactions = [
   },
 ];
 
+// Format all financial values in USD
 function formatUSD(amount: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -131,11 +137,14 @@ function formatUSD(amount: number) {
   }).format(amount);
 }
 
-export default function Home() {
+export default function DashboardContent() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 lg:flex">
+
       {/* Sidebar */}
       <aside className="hidden min-h-screen w-64 shrink-0 border-r border-slate-200 bg-white lg:flex lg:flex-col">
+
+        {/* Logo */}
         <div className="border-b border-slate-100 px-6 py-7">
           <div className="flex items-center gap-3">
             <div className="rounded-xl bg-blue-600 p-2 text-white">
@@ -153,6 +162,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Navigation */}
         <nav className="flex-1 space-y-1 p-4">
           <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
             Main Menu
@@ -177,12 +187,21 @@ export default function Home() {
           })}
         </nav>
 
+        {/* Sidebar Footer */}
         <div className="border-t border-slate-100 p-4">
+
+          {/* Settings */}
           <div className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-600">
             <Settings size={19} />
-            Settings
+            <span>Settings</span>
           </div>
 
+          {/* Logout */}
+          <div className="mt-4">
+            <LogoutButton />
+          </div>
+
+          {/* Application Information */}
           <div className="mt-4 rounded-xl bg-blue-50 p-4">
             <p className="font-semibold text-blue-900">
               FundTrack
@@ -196,6 +215,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="min-w-0 flex-1">
+
         {/* Header */}
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-5 py-5 lg:px-8">
           <div>
@@ -218,12 +238,14 @@ export default function Home() {
         </header>
 
         <main className="space-y-8 p-5 lg:p-8">
+
           {/* Welcome */}
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
                 Financial Overview
               </h1>
+
               <Badge variant="secondary">
                 Demo Data
               </Badge>
@@ -242,6 +264,7 @@ export default function Home() {
               return (
                 <Card key={stat.title} className="border-slate-200">
                   <CardContent className="p-6">
+
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-slate-500">
                         {stat.title}
@@ -276,9 +299,14 @@ export default function Home() {
 
           {/* Budget Overview */}
           <section className="grid gap-6 xl:grid-cols-3">
+
+            {/* Project Budget Utilization */}
             <Card className="border-slate-200 xl:col-span-2">
               <CardHeader>
-                <CardTitle>Project Budget Utilization</CardTitle>
+                <CardTitle>
+                  Project Budget Utilization
+                </CardTitle>
+
                 <p className="text-sm text-slate-500">
                   Budget allocation and expenditure by project
                 </p>
@@ -287,7 +315,9 @@ export default function Home() {
               <CardContent className="space-y-6">
                 {projects.map((project) => {
                   const percentage =
-                    (project.spent / project.budget) * 100;
+                    project.budget > 0
+                      ? (project.spent / project.budget) * 100
+                      : 0;
 
                   return (
                     <div key={project.name}>
@@ -302,11 +332,15 @@ export default function Home() {
                         </span>
                       </div>
 
+                      {/* Progress Bar */}
                       <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
                         <div
                           className="h-full rounded-full bg-blue-600"
                           style={{
-                            width: `${Math.min(percentage, 100)}%`,
+                            width: `${Math.min(
+                              Math.max(percentage, 0),
+                              100
+                            )}%`,
                           }}
                         />
                       </div>
@@ -320,9 +354,13 @@ export default function Home() {
               </CardContent>
             </Card>
 
+            {/* Funding Summary */}
             <Card className="border-slate-200">
               <CardHeader>
-                <CardTitle>Funding Summary</CardTitle>
+                <CardTitle>
+                  Funding Summary
+                </CardTitle>
+
                 <p className="text-sm text-slate-500">
                   Overall financial allocation
                 </p>
@@ -332,7 +370,9 @@ export default function Home() {
                 <div className="flex justify-center py-7">
                   <div className="flex h-44 w-44 items-center justify-center rounded-full border-[18px] border-blue-600 bg-white">
                     <div className="text-center">
-                      <p className="text-3xl font-bold">35%</p>
+                      <p className="text-3xl font-bold">
+                        35%
+                      </p>
                       <p className="text-xs text-slate-500">
                         Budget Used
                       </p>
@@ -341,6 +381,7 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-4 border-t pt-5">
+
                   <div className="flex justify-between text-sm">
                     <span className="flex items-center gap-2">
                       <DollarSign size={16} />
@@ -375,7 +416,10 @@ export default function Home() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle>Recent Transactions</CardTitle>
+                    <CardTitle>
+                      Recent Transactions
+                    </CardTitle>
+
                     <p className="mt-1 text-sm text-slate-500">
                       Latest financial activities
                     </p>
@@ -391,13 +435,24 @@ export default function Home() {
               <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
+
                     <thead>
                       <tr className="border-b text-slate-500">
-                        <th className="pb-4 font-medium">Reference</th>
-                        <th className="pb-4 font-medium">Description</th>
-                        <th className="pb-4 font-medium">Project</th>
-                        <th className="pb-4 font-medium">Date</th>
-                        <th className="pb-4 font-medium">Status</th>
+                        <th className="pb-4 font-medium">
+                          Reference
+                        </th>
+                        <th className="pb-4 font-medium">
+                          Description
+                        </th>
+                        <th className="pb-4 font-medium">
+                          Project
+                        </th>
+                        <th className="pb-4 font-medium">
+                          Date
+                        </th>
+                        <th className="pb-4 font-medium">
+                          Status
+                        </th>
                         <th className="pb-4 text-right font-medium">
                           Amount
                         </th>
@@ -459,6 +514,7 @@ export default function Home() {
             </Card>
           </section>
 
+          {/* Footer */}
           <footer className="text-center text-xs text-slate-400">
             FundTrack — Financial Management Platform
           </footer>
